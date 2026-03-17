@@ -1,19 +1,25 @@
-"use client";
-
-import { useSearchParams, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { Card } from "../../../components/ui/Card";
 import { Button } from "../../../components/ui/Button";
 
-export default function RestaurantConfirmationPage() {
-  const params = useSearchParams();
-  const router = useRouter();
-
-  const name = params.get("name") || "Guest";
-  const phone = params.get("phone") || "Not provided";
-  const guests = params.get("guests") || "2";
-  const date = params.get("date") || "Soon";
-  const time = params.get("time") || "To be confirmed";
-  const requests = params.get("requests") || "No special requests";
+export default function RestaurantConfirmationPage({
+  searchParams,
+}: {
+  searchParams: {
+    name?: string;
+    phone?: string;
+    guests?: string;
+    date?: string;
+    time?: string;
+    requests?: string;
+  };
+}) {
+  const name = searchParams.name || "Guest";
+  const phone = searchParams.phone || "Not provided";
+  const guests = searchParams.guests || "2";
+  const date = searchParams.date || "Soon";
+  const time = searchParams.time || "To be confirmed";
+  const requests = searchParams.requests || "No special requests";
 
   return (
     <div className="flex flex-1 bg-linear-to-b from-slate-50 via-slate-50 to-slate-100">
@@ -86,28 +92,43 @@ export default function RestaurantConfirmationPage() {
               Changes can be made up to 2 hours before your reservation.
             </div>
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  const query = params.toString();
-                  router.push(
+              <form
+                action={async () => {
+                  "use server";
+                  const query = new URLSearchParams({
+                    name,
+                    phone,
+                    guests,
+                    date,
+                    time,
+                    requests,
+                  }).toString();
+                  redirect(
                     query
                       ? `/restaurant/booking?${query}`
                       : "/restaurant/booking",
                   );
                 }}
               >
-                Edit reservation
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-red-600 hover:bg-red-50"
-                onClick={() => router.push("/restaurant/booking")}
+                <Button variant="outline" size="sm" type="submit">
+                  Edit reservation
+                </Button>
+              </form>
+              <form
+                action={async () => {
+                  "use server";
+                  redirect("/restaurant/booking");
+                }}
               >
-                Cancel
-              </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-red-600 hover:bg-red-50"
+                  type="submit"
+                >
+                  Cancel
+                </Button>
+              </form>
             </div>
           </div>
         </Card>
