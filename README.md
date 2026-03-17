@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Overview
+
+This project is a **Next.js booking system prototype** that demonstrates how a single codebase can support different booking experiences for multiple niches, starting with:
+
+- **Restaurant reservations** – a warm, atmosphere-first flow for booking tables.
+- **Doctor appointments** – a calm, clinical flow for scheduling medical visits.
+
+The focus is on **UX, UI, and flow design**, not on backend persistence or real payments.
+
+## Features
+
+- **Dual-niche home page**
+  - Landing page that explains the concept and lets you choose between the restaurant and doctor flows.
+
+- **Restaurant flow**
+  - Restaurant landing page with hero imagery, featured dishes, and testimonials.
+  - Booking form for name, phone, number of guests, date, time, and special requests.
+  - Validation for required fields and restaurant opening hours.
+  - Confirmation page that summarizes the reservation details.
+
+- **Doctor flow**
+  - Doctor listing page with cards for each doctor (image, specialty, rating, patients).
+  - Booking form for patient name, phone, doctor selection, date, time, and reason for visit.
+  - Simple validation on required fields.
+  - Confirmation page that summarizes the appointment details and allows editing via query params.
+
+- **Shared UI components**
+  - `Card`, `Button`, `Input`, `Modal`, `DatePicker`, and `TimePicker` components shared across flows.
+  - Consistent, mobile-first layouts and gradients tailored per niche.
+
+## Tech Stack
+
+- **Framework**: Next.js App Router (TypeScript)
+- **Styling**: Tailwind-style utility classes via global CSS
+- **UI**: Custom React components for cards, forms, and layout
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies (if you haven’t already):
+
+```bash
+npm install
+```
+
+Then run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000` in your browser to explore:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `/` – home page explaining the dual booking prototype.
+- `/restaurant` – restaurant experience.
+- `/restaurant/booking` – restaurant booking form.
+- `/doctor` – doctor listing and entry point.
+- `/doctor/booking` – doctor booking form.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Notes & Next Steps
 
-## Learn More
+This is currently a **front-end prototype**:
 
-To learn more about Next.js, take a look at the following resources:
+- Data is static and stored in components (no database).
+- Bookings are passed via URL query parameters between steps.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Possible next steps:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Add a backend (API routes or external service) to persist bookings.
+- Add authentication so users can manage their reservations.
+- Generalize the flows to support more niches beyond restaurants and healthcare.
