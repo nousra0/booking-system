@@ -1,19 +1,26 @@
-"use client";
-
-import { useSearchParams, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { Card } from "../../../components/ui/Card";
 import { Button } from "../../../components/ui/Button";
 
-export default function DoctorConfirmationPage() {
-  const params = useSearchParams();
-  const router = useRouter();
-
-  const patientName = params.get("patientName") || "Patient";
-  const phone = params.get("phone") || "Not provided";
-  const doctor = params.get("doctor") || "Assigned at clinic";
-  const date = params.get("date") || "Soon";
-  const time = params.get("time") || "To be confirmed";
-  const reason = params.get("reason") || "General consultation";
+export default function DoctorConfirmationPage({
+  searchParams,
+}: {
+  searchParams: {
+    patientName?: string;
+    phone?: string;
+    doctor?: string;
+    date?: string;
+    time?: string;
+    reason?: string;
+    mode?: string;
+  };
+}) {
+  const patientName = searchParams.patientName || "Patient";
+  const phone = searchParams.phone || "Not provided";
+  const doctor = searchParams.doctor || "Assigned at clinic";
+  const date = searchParams.date || "Soon";
+  const time = searchParams.time || "To be confirmed";
+  const reason = searchParams.reason || "General consultation";
 
   return (
     <div className="flex flex-1 bg-linear-to-b from-emerald-50 via-slate-50 to-white">
@@ -86,11 +93,9 @@ export default function DoctorConfirmationPage() {
               of this platform.
             </div>
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-emerald-200"
-                onClick={() => {
+              <form
+                action={async () => {
+                  "use server";
                   const qs = new URLSearchParams({
                     mode: "edit",
                     patientName,
@@ -100,19 +105,33 @@ export default function DoctorConfirmationPage() {
                     time,
                     reason,
                   }).toString();
-                  router.push(`/doctor/booking?${qs}`);
+                  redirect(`/doctor/booking?${qs}`);
                 }}
               >
-                Edit appointment
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-rose-600 hover:bg-rose-50"
-                onClick={() => router.push("/doctor/booking")}
+                <Button
+                  type="submit"
+                  variant="outline"
+                  size="sm"
+                  className="border-emerald-200"
+                >
+                  Edit appointment
+                </Button>
+              </form>
+              <form
+                action={async () => {
+                  "use server";
+                  redirect("/doctor/booking");
+                }}
               >
-                Cancel
-              </Button>
+                <Button
+                  type="submit"
+                  variant="ghost"
+                  size="sm"
+                  className="text-rose-600 hover:bg-rose-50"
+                >
+                  Cancel
+                </Button>
+              </form>
             </div>
           </div>
         </Card>
